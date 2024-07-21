@@ -1,0 +1,25 @@
+[
+  {
+    "accessory": "GlassRound",
+    "body": "Hoodie",
+    "face": "SmileBig",
+    "facialHair": "Goatee",
+    "hair": "Bun"
+  },
+
+  {
+    "accessory": "SunglassWayfarer",
+    "body": "BlazerPantsWB",
+    "face": "Contempt",
+    "facialHair": "None",
+    "hair": "Mohawk"
+  },
+
+  {
+    "accessory": "None",
+    "body": "Dress",
+    "face": "Awe",
+    "facialHair": "MajesticHandlebars",
+    "hair": "BantuKnots"
+  }
+]

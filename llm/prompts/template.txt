@@ -1,0 +1,18 @@
+Follow these steps exactly.
+
+1)  Describe the uploaded image in words. What is the person wearing?
+    Do they have accessories on? Any headdresses? What hair style do they have?
+    What body type? What expression is on their face? Do they have facial hair?
+    Is it thick? How much of the face does it cover? Are they wearing glasses?
+    What are they wearing? What is their ethnicity? Be as descriptive as possible.
+
+2)  Finally, study the following schema. For each property, make a choice out of
+    the possible options. You can use your description of the image as well as
+    the image itself to inform your decisions. Your output should be valid JSON
+    that follows this schema.
+
+{schema_json}
+
+Here are some example outputs.
+
+{examples_json}
