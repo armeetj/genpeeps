@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Peep from "react-peeps";
 import {
     Select,
     SelectTrigger,
     SelectValue,
     SelectContent,
-    SelectGroup,
-    SelectLabel,
     SelectItem,
-    SelectSeparator,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import toImg from "react-svg-to-image"
+import { saveAs } from 'file-saver'; // For downloading images
+import Link from "next/link";
+import { SelectLabel } from "@radix-ui/react-select";
+
+import { savePng, saveSvg } from "@/utils/save";
+
+
 
 const accessoryOptions = [
     "None",
@@ -203,11 +209,12 @@ const hairOptions = [
 ];
 
 export default function Home() {
-    const [accessory, setAccessory] = useState("SunglassWayfarer");
-    const [body, setBody] = useState("BlazerPantsWB");
-    const [face, setFace] = useState("Contempt");
-    const [facialHair, setFacialHair] = useState("None");
-    const [hair, setHair] = useState("Mohawk");
+    const [accessory, setAccessory] = useState("GlassRoundThick");
+    const [body, setBody] = useState("Shirt");
+    const [face, setFace] = useState("Calm");
+    const [facialHair, setFacialHair] = useState("Full");
+    const [hair, setHair] = useState("Turban");
+    const svgRef = useRef(null);
 
     const properties = {
         accessory,
@@ -217,79 +224,122 @@ export default function Home() {
         hair,
     };
 
-    return (
-        <main className={`flex min-h-screen flex-col items-center space-y-9 p-24`}>
-            <h1 className="text-3xl font-black">genpeeps</h1>
-            <p>
-                Automatically generate Notion styled profiles/avatars. Based on
-                openpeeps and opeep.fun
-            </p>
-            <div className="flex flex-col space-y-4">
-                <div className="w-[200px]">
-                    <Peep {...properties} />
-                </div>
-                <Select value={accessory} onValueChange={setAccessory}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select accessory" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {accessoryOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                                {option}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <Select value={body} onValueChange={setBody}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select body" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {bodyOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                                {option}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <Select value={face} onValueChange={setFace}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select face" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {faceOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                                {option}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <Select value={facialHair} onValueChange={setFacialHair}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select facial hair" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {facialHairOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                                {option}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-                <Select value={hair} onValueChange={setHair}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select hair" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {hairOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                                {option}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+    // const styles = {
+    //     peepStyle: {
+    //         width: 300,
+    //         height: 300,
+    //         justifyContent: 'center',
+    //         alignSelf: 'center'
+    //         view
+    //     },
+    // }
 
+    const handleDownloadSVG = () => {
+        const svgElement = svgRef.current.querySelector('svg');
+        saveSvg(svgElement, "avatar.svg");
+    }
+
+    const handleDownloadPNG = () => {
+        const svgElement = svgRef.current.querySelector('svg');
+        savePng(svgElement, "avatar.png", 1);
+    }
+
+    const handleCopyReactCode = () => {
+        const reactCode = `<Peep ${Object.entries(properties).map(([key, value]) => `${key}="${value}"`).join(' ')} />`;
+        navigator.clipboard.writeText(reactCode);
+        alert('React code copied to clipboard!');
+    };
+
+    return (
+        <>
+            <div id="header" className="flex justify-center w-full py-1 font-mono text-sm text-white bg-black">
+                <p>
+                    Made by {" "}
+                    <Link href="https://armeet.ca" className="underline">@armeet</Link>
+                </p>
             </div>
-        </main>
+            <main className="flex flex-col items-center p-4 space-y-6 md:p-10">
+                <h1 className="font-mono text-3xl font-black">&lt;genpeeps&gt;</h1>
+                <p className="text-center">
+                    Generate Notion styled profiles/avatars with AI. <br />
+                    Based on {" "}
+                    <Link href="https://www.openpeeps.com/" target="_blank" className="underline">openpeeps</Link> and {" "}
+                    <Link href="https://opeeps.fun/" target="_blank" className="underline">opeeps.fun</Link>.
+                </p>
+                <div ref={svgRef} className="w-[200px]">
+                    <Peep
+                        // style={styles.peepStyle}
+                        // viewBox={{ x: '0', y: '0', width: '1050', height: '1200' }}
+                        {...properties}
+                    />
+                </div>
+                <div className="grid w-full max-w-md grid-cols-1 gap-4 md:grid-cols-2">
+                    <Select value={accessory} onValueChange={setAccessory}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select accessory" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {accessoryOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                    {option}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Select value={body} onValueChange={setBody}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select body" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {bodyOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                    {option}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Select value={face} onValueChange={setFace}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select face" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {faceOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                    {option}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Select value={facialHair} onValueChange={setFacialHair}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select facial hair" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {facialHairOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                    {option}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Select value={hair} onValueChange={setHair}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select hair" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {hairOptions.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                    {option}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+                    <Button onClick={handleDownloadSVG}>Download SVG</Button>
+                    <Button onClick={handleDownloadPNG}>Download PNG</Button>
+                    <Button onClick={handleCopyReactCode}>Copy React Code</Button>
+                </div>
+            </main></>
     );
 }
