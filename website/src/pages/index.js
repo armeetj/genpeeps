@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Peep from "react-peeps";
 import {
     Select,
@@ -8,14 +8,11 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import toImg from "react-svg-to-image"
 import { saveAs } from 'file-saver'; // For downloading images
 import Link from "next/link";
 import { SelectLabel } from "@radix-ui/react-select";
 
 import { savePng, saveSvg } from "@/utils/save";
-
-
 
 const accessoryOptions = [
     "None",
@@ -209,11 +206,11 @@ const hairOptions = [
 ];
 
 export default function Home() {
-    const [accessory, setAccessory] = useState("GlassRoundThick");
-    const [body, setBody] = useState("Shirt");
-    const [face, setFace] = useState("Calm");
-    const [facialHair, setFacialHair] = useState("Full");
-    const [hair, setHair] = useState("Turban");
+    const [accessory, setAccessory] = useState(null);
+    const [body, setBody] = useState(null);
+    const [face, setFace] = useState(null);
+    const [facialHair, setFacialHair] = useState(null);
+    const [hair, setHair] = useState(null);
     const svgRef = useRef(null);
 
     const properties = {
@@ -224,15 +221,17 @@ export default function Home() {
         hair,
     };
 
-    // const styles = {
-    //     peepStyle: {
-    //         width: 300,
-    //         height: 300,
-    //         justifyContent: 'center',
-    //         alignSelf: 'center'
-    //         view
-    //     },
-    // }
+    useEffect(() => {
+        randomizeProperties();
+    }, []);
+
+    const randomizeProperties = () => {
+        setAccessory(accessoryOptions[Math.floor(Math.random() * accessoryOptions.length)]);
+        setBody(bodyOptions[Math.floor(Math.random() * bodyOptions.length)]);
+        setFace(faceOptions[Math.floor(Math.random() * faceOptions.length)]);
+        setFacialHair(facialHairOptions[Math.floor(Math.random() * facialHairOptions.length)]);
+        setHair(hairOptions[Math.floor(Math.random() * hairOptions.length)]);
+    };
 
     const handleDownloadSVG = () => {
         const svgElement = svgRef.current.querySelector('svg');
@@ -336,9 +335,10 @@ export default function Home() {
                     </Select>
                 </div>
                 <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-                    <Button onClick={handleDownloadSVG}>Download SVG</Button>
-                    <Button onClick={handleDownloadPNG}>Download PNG</Button>
+                    <Button onClick={handleDownloadSVG}>Download</Button>
+                    {/* <Button onClick={handleDownloadPNG}>Download PNG</Button> */}
                     <Button onClick={handleCopyReactCode}>Copy React Code</Button>
+                    <Button onClick={randomizeProperties}>Randomize</Button>
                 </div>
             </main></>
     );
