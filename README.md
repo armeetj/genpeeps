@@ -11,7 +11,16 @@ Leveraging LLMs with vision capabilities to automatically generate profile pictu
 - [genpeeps](#genpeeps)
 - [TODO](#todo)
 
-# TODO
-- [ ] make frontend
+## User Flow
+Planned User Flow
+1. user uploads image
+2. ViT/foundation model is used to describe properties (hair style, gender, accessories, etc.)
+3. LLM/foundation model picks the best react-peeps assets
+4. user manually fine-tunes their avatar
+5. user downloads svg avatar
+
+## TODO
+- [x] make frontend
+- [x] prompting w/ sanity testing
 - [ ] wrap microservice in flask
 - [ ] make backend (maybe next.js or part of flask)
