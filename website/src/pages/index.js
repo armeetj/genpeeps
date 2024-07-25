@@ -225,13 +225,30 @@ export default function Home() {
         randomizeProperties();
     }, []);
 
+    // const randomizeProperties = () => {
+    //     setAccessory(accessoryOptions[Math.floor(Math.random() * accessoryOptions.length)]);
+
+    //     setBody(bodyOptions[Math.floor(Math.random() * bodyOptions.length)]);
+    //     setFace(faceOptions[Math.floor(Math.random() * faceOptions.length)]);
+    //     setFacialHair(facialHairOptions[Math.floor(Math.random() * facialHairOptions.length)]);
+    //     setHair(hairOptions[Math.floor(Math.random() * hairOptions.length)]);
+    // };
+
+    function animate(fn, args, dt, n) {
+        for (let i = 0; i < n; i++) {
+            setTimeout(() => {
+                fn(args());
+            }, dt * i);
+        }
+
+    }
     const randomizeProperties = () => {
-        setAccessory(accessoryOptions[Math.floor(Math.random() * accessoryOptions.length)]);
-        setBody(bodyOptions[Math.floor(Math.random() * bodyOptions.length)]);
-        setFace(faceOptions[Math.floor(Math.random() * faceOptions.length)]);
-        setFacialHair(facialHairOptions[Math.floor(Math.random() * facialHairOptions.length)]);
-        setHair(hairOptions[Math.floor(Math.random() * hairOptions.length)]);
-    };
+        animate(setAccessory, () => accessoryOptions[Math.floor(Math.random() * accessoryOptions.length)], 10, 20);
+        animate(setBody, () => bodyOptions[Math.floor(Math.random() * bodyOptions.length)], 100, 5);
+        animate(setFace, () => faceOptions[Math.floor(Math.random() * faceOptions.length)], 100, 8);
+        animate(setFacialHair, () => facialHairOptions[Math.floor(Math.random() * facialHairOptions.length)], 80, 15);
+        animate(setHair, () => hairOptions[Math.floor(Math.random() * hairOptions.length)], 50, 20);
+    }
 
     const handleDownloadSVG = () => {
         const svgElement = svgRef.current.querySelector('svg');
@@ -265,6 +282,9 @@ export default function Home() {
                     <Link href="https://www.openpeeps.com/" target="_blank" className="underline">openpeeps</Link> and {" "}
                     <Link href="https://opeeps.fun/" target="_blank" className="underline">opeeps.fun</Link>.
                 </p>
+
+
+
                 <div ref={svgRef} className="w-[200px]">
                     <Peep
                         // style={styles.peepStyle}
