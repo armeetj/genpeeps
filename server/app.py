@@ -4,27 +4,17 @@ import requests
 from PIL import Image
 from io import BytesIO
 from dotenv import load_dotenv
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import PromptTemplate
 
-import os
-import re
-import json
+from utils.image import downsize
+from llm.openai import get_properties
 
 # load api keys
 load_dotenv("secret/.env")
 
 app = Flask(__name__)
 
-
-
-
-
 @app.route("/gen", methods=["POST"])
-def process_image_route():
+def gen_route():
     data = request.json
     if "image_data" not in data:
         return jsonify({"error": "No image data"}), 400
@@ -34,14 +24,14 @@ def process_image_route():
 
         # preprocess image
         image = Image.open(BytesIO(image_b64))
-        processed_image = process_image(image)
+        processed_image = downsize(image)
         buffered = BytesIO()
         processed_image.save(buffered, format="PNG")
         processed_b64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
         # pass to openai
 
-        res = None
+        res = {"img_b64": processed_b64}
         return jsonify(res), 200
     except:
         return jsonify({"error": "Image could not be processed"}), 500
