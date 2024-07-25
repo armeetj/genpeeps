@@ -14,6 +14,11 @@ import { SelectLabel } from "@radix-ui/react-select";
 
 import { savePng, saveSvg } from "@/utils/save";
 
+import { InboxOutlined, LoadingOutlined } from '@ant-design/icons';
+import { message, Upload, Spin } from 'antd';
+
+const { Dragger } = Upload;
+
 const accessoryOptions = [
     "None",
     "Eyepatch",
@@ -213,6 +218,9 @@ export default function Home() {
     const [hair, setHair] = useState(null);
     const svgRef = useRef(null);
 
+    const [imageData, setImageData] = useState(null);
+    const [loading, setLoading] = useState(false);
+
     const properties = {
         accessory,
         body,
@@ -233,6 +241,54 @@ export default function Home() {
         }
 
     }
+
+    function readImage(file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            if (e.type == "load") {
+                const data = e.target.result;
+                setImageData(data);
+            }
+        };
+        reader.readAsDataURL(file)
+
+        return false;
+    }
+
+    function generateAvatar() {
+        setLoading(true);
+    }
+
+    const uploadProps = {
+        name: 'file',
+        multiple: false,
+        maxCount: 1,
+        listType: "picture",
+        // action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+        accept: ".png, .jpg, .jpeg",
+        beforeUpload: readImage,
+        onChange(info) {
+            const { status } = info.file;
+            if (status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully.`);
+            } else if (status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        onDownload(e) {
+            console.log("download");
+
+        },
+        onRemove(e) {
+            setImageData(null);
+        },
+        onDrop(e) {
+            console.log('Dropped files', e.dataTransfer.files);
+        },
+    };
     const randomizeProperties = () => {
         animate(setAccessory, () => accessoryOptions[Math.floor(Math.random() * accessoryOptions.length)], 10, 20);
         animate(setBody, () => bodyOptions[Math.floor(Math.random() * bodyOptions.length)], 100, 5);
@@ -274,6 +330,20 @@ export default function Home() {
                     <Link href="https://opeeps.fun/" target="_blank" className="underline">opeeps.fun</Link>.
                 </p>
 
+                <Dragger {...uploadProps} >
+                    <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p className="ant-upload-hint">
+                        Upload a picture of yourself to magically <br />generate a personalized avatar with AI ✨ <br />
+                        (png, jpeg)
+                    </p>
+                </Dragger>
+
+                {imageData && <Button disabled={loading} onClick={generateAvatar} className="font-mono font-black">
+                    {loading && <Spin percent="auto" className="mr-4" />}
+                    🪄 generate ✨</Button>}
 
 
                 <div ref={svgRef} className="w-[200px]">
@@ -346,10 +416,10 @@ export default function Home() {
                     </Select>
                 </div>
                 <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-                    <Button onClick={handleDownloadSVG}>Download</Button>
+                    <Button variant="secondary" onClick={handleDownloadSVG}>📥 download</Button>
                     {/* <Button onClick={handleDownloadPNG}>Download PNG</Button> */}
-                    <Button onClick={handleCopyReactCode}>Copy React Code</Button>
-                    <Button onClick={randomizeProperties}>Randomize</Button>
+                    <Button variant="secondary" onClick={handleCopyReactCode}>📎 copy react code</Button>
+                    <Button variant="secondary" onClick={randomizeProperties}>🎲 randomize</Button>
                 </div>
             </main></>
     );
