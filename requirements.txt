@@ -4,3 +4,4 @@ flask
 python-dotenv
 langchain-openai
 langchain-core
+pillow

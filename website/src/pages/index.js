@@ -341,9 +341,12 @@ export default function Home() {
                     </p>
                 </Dragger>
 
-                {imageData && <Button disabled={loading} onClick={generateAvatar} className="font-mono font-black">
-                    {loading && <Spin percent="auto" className="mr-4" />}
-                    🪄 generate ✨</Button>}
+                {imageData &&
+                    <Button disabled={loading} onClick={generateAvatar} className="font-mono font-black">
+                        {loading && <Spin percent="auto" className="mr-4" />}
+                        🪄 generate ✨
+                    </Button>
+                }
 
 
                 <div ref={svgRef} className="w-[200px]">

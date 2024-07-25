@@ -1,16 +1,3 @@
-from dotenv import load_dotenv
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import PromptTemplate
-
-import os
-import re
-import json
-
-# load api keys
-load_dotenv("secret/.env")
 
 # init model
 model = ChatOpenAI(
