@@ -225,15 +225,6 @@ export default function Home() {
         randomizeProperties();
     }, []);
 
-    // const randomizeProperties = () => {
-    //     setAccessory(accessoryOptions[Math.floor(Math.random() * accessoryOptions.length)]);
-
-    //     setBody(bodyOptions[Math.floor(Math.random() * bodyOptions.length)]);
-    //     setFace(faceOptions[Math.floor(Math.random() * faceOptions.length)]);
-    //     setFacialHair(facialHairOptions[Math.floor(Math.random() * facialHairOptions.length)]);
-    //     setHair(hairOptions[Math.floor(Math.random() * hairOptions.length)]);
-    // };
-
     function animate(fn, args, dt, n) {
         for (let i = 0; i < n; i++) {
             setTimeout(() => {
