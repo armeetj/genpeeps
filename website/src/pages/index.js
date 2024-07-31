@@ -14,7 +14,9 @@ import { SelectLabel } from "@radix-ui/react-select";
 
 import { savePng, saveSvg } from "@/utils/save";
 
-import { InboxOutlined, LoadingOutlined } from '@ant-design/icons';
+// import { InboxOutlined, LoadingOutlined } from '@ant-design/icons';
+import InboxOutlined from "@ant-design/icons/InboxOutlined";
+// import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { message, Upload, Spin } from 'antd';
 
 const { Dragger } = Upload;

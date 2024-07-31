@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.21.0",
     "@mantine/hooks": "^7.11.2",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
-    "antd": "^5.19.3",
+    "antd": "^5.19.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "file-saver": "^2.0.5",
